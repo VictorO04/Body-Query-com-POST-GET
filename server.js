@@ -153,7 +153,20 @@ app.get("/animais", (req, res) => {
     });
 });
 
-// Iniciar servidor escutando na porta definida
+app.get("/stats", (req, res) => {
+  const {casa} = req.query;
+  let resultado = bruxos;
+
+  if (casa) {
+    resultado = resultado.filter(b => b.casa.toLowerCase().includes(casa.toLowerCase()));
+
+    res.status(200).json({
+      total: resultado.length,
+      casa: casa
+    });
+  }
+});
+
 app.listen(serverPort, () => {
     console.log(`🚀 Servidor rodando em http://localhost:${serverPort} 🚀`);
 });
