@@ -1,26 +1,18 @@
-// Importar pacotes/bibliotecas
 import express from "express";
 import dotenv from "dotenv";
 import dados from "./src/data/dados.js";
 const {bruxos, varinhas, pocoes, animais} = dados;
 
-// Criar aplicação com Express e configurar para aceitar JSON
 const app = express();
 app.use(express.json());
 
-// Carregar variáveis de ambiente e definir constante para porta do servidor
 dotenv.config();
 const serverPort = process.env.PORT;
 
-// Rota principal GET para "/"
 app.get("/", (req, res) => {
     res.send("🚀 Servidor funcionando...");
 });
 
-
-// Aqui vão todas suas Rotas
-
-// Query Parameters no Node.js - API de Hogwarts
 app.get('/bruxos', (req, res) => {
     const {casa, ano, especialidade, nome} = req.query;
     let resultado = bruxos;
@@ -46,8 +38,6 @@ app.get('/bruxos', (req, res) => {
       data: resultado
     });
 });
-
-//Body
 
 app.post("/bruxos", (req, res) => {
     const {nome, casa, ano, varinha, mascote, patrono, especialidade, vivo} = req.body;
@@ -118,6 +108,23 @@ app.get("/pocoes", (req, res) => {
     total: resultado.length,
     data: resultado
   });
+});
+
+app.get("/animais", (req, res) => {
+    const {nome, tipo} = req.query;
+    let resultado = animais;
+
+    if (nome) {
+      resultado = resultado.filter(b => b.nome.toLowerCase().includes(nome.toLowerCase()));
+    }
+    if (tipo) {
+      resultado = resultado.filter(b => b.tipo.toLowerCase().includes(tipo.toLowerCase()));
+    }
+
+    res.status(200).json({
+      total: resultado.length,
+      data: resultado
+    });
 });
 
 // Iniciar servidor escutando na porta definida
