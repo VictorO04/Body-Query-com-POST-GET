@@ -92,6 +92,32 @@ app.get("/varinhas", (req, res) => {
   });
 });
 
+app.post("/varinhas", (req, res) => {
+  const {material, nucleo, comprimento} = req.body;
+
+  if (!material || !nucleo || !comprimento) {
+    return res.status(400).json({
+      sucess: false,
+      massage: "Material, nucleo e comprimento são obrigatórios para uma varinha"
+    });
+  }
+
+  const novaVarinha = {
+    id: varinhas.length + 1,
+    material,
+    nucleo,
+    comprimento
+  }
+
+  varinhas.push(novaVarinha);
+
+  res.status(201).json({
+    sucess: true,
+    message: "Nova varinha adicionada",
+    data: novaVarinha
+  });
+});
+
 app.get("/pocoes", (req, res) => {
   const {nome, efeito} = req.query;
   let resultado = pocoes;
